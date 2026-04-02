@@ -21,7 +21,7 @@ const swaggerOptions = {
     },
     servers : [
         {
-            url : "http://localhost:3001"
+            url : "http://localhost:4000"
         }
     ],
     },
@@ -32,6 +32,7 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Basic health check 
 app.get("/",(req:Request, res:Response)=>{
     res.json({
