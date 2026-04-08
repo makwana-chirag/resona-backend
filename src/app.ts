@@ -3,12 +3,16 @@ import express from "express";
 import cors from "cors";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express';
+import usersRouter from './routes/users';
 
 const app:Application = express();
 
 // Middleware 
 app.use(cors())
 app.use(express.json())
+
+// Routes
+app.use('/', usersRouter);
 
 // Swagger Configuration
 const swaggerOptions = {
@@ -26,7 +30,7 @@ const swaggerOptions = {
     ],
     },
     apis:[
-        "./src/routes/*.ts"
+        "./src/routes/*.ts",
     ]
 };
 
