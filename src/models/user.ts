@@ -1,25 +1,29 @@
-import { body } from "express-validator";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs"
 
-export const userSchema = new mongoose.Schema({
+// This helps TypeScript understand what a "User" looks like in your code
+export interface IUser extends mongoose.Document {
+    name: string;
+    email: string;
+    password: string;
+}
+
+const userSchema = new mongoose.Schema({
     name : {type : String, required : true, trim : true , minlength : 3, maxlength : 50},
     email : {type : String, required : true, unique : true, trim : true},
     password : {type : String, required : true, trim : true, minlength : 8 , maxlength : 128},
-})
+},{timestamps:true})
 
-export const User = mongoose.model('User', userSchema) 
 
-export interface UserData {
-    name : string,
-    email : string,
-    password : string,
-}
+// hashing password before storing it on db
+userSchema.pre<IUser>("save", async function () {
+    // If password isn't changed, just return (same as calling next())
+    if (!this.isModified("password")) return;
 
-export const userValidation = (userData: UserData) =>{
-    const schema = [
-        body('name').isString().isLength({min:3,max:50}),
-        body('email').isEmail(),
-        body('password').isLength({min:8,max:128})
-    ]
-    return schema;
-}
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    
+    // No next() needed here! Mongoose waits for the async function to resolve.
+});
+
+export const User = mongoose.model<IUser>('User', userSchema)
