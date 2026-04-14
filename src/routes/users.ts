@@ -1,6 +1,4 @@
-import express, { Request, Response } from 'express';
-import { User} from "../models/user"
-import { validationResult } from 'express-validator';
+import express from 'express';
 import { validateUserRegistration } from '../validators/user.validator';
 import { registerUser } from '../controllers/user.controller';
 
