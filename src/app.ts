@@ -12,8 +12,8 @@ app.use(cors())
 app.use(express.json())
 
 // Routes
-app.use('/', usersRouter);
-app.use('/auth', authRouter);
+app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/auth', authRouter);
 
 // Swagger Configuration
 const swaggerOptions = {

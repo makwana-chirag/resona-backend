@@ -2,10 +2,14 @@ import express from 'express';
 import { validateUserRegistration } from '../validators/user.validator';
 import { userSignUp } from '../controllers/user.controller';
 
+const router = express.Router()
+
 /**
  * @swagger
- * /sign-up:
+ * /api/v1/users/sign-up:
  *   post:
+ *     tags:
+ *       - Authentication Mobile
  *     summary: User Sign Up
  *     description: Create a new user account.
  *     requestBody:
@@ -36,7 +40,6 @@ import { userSignUp } from '../controllers/user.controller';
  *       500:
  *         description: Internal server error
  */
-const router = express.Router()
 
 router.post("/sign-up",validateUserRegistration,userSignUp)
 
