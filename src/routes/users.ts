@@ -1,6 +1,6 @@
 import express from 'express';
 import { validateUserRegistration } from '../validators/user.validator';
-import { registerUser } from '../controllers/user.controller';
+import { userSignUp } from '../controllers/user.controller';
 
 /**
  * @swagger
@@ -38,6 +38,6 @@ import { registerUser } from '../controllers/user.controller';
  */
 const router = express.Router()
 
-router.post("/sign-up",validateUserRegistration,registerUser)
+router.post("/sign-up",validateUserRegistration,userSignUp)
 
 export default router

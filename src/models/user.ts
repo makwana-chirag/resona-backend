@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
 // This helps TypeScript understand what a "User" looks like in your code
 export interface IUser extends mongoose.Document {
     name: string;
     email: string;
     password: string;
+    comparePassword(password: string): Promise<boolean>;
+    createJWT():string
 }
 
 const userSchema = new mongoose.Schema({
@@ -23,7 +26,16 @@ userSchema.pre<IUser>("save", async function () {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     
-    // No next() needed here! Mongoose waits for the async function to resolve.
 });
+
+// helper method to compare password 
+userSchema.methods.comparePassword = async function(password: string){
+    return await bcrypt.compare(password,this.password)
+}
+
+// create jwt 
+userSchema.methods.createJWT = function(){
+    return jwt.sign({userId: this._id, email : this.email}, process.env.JWT_SECRET!,{expiresIn : "1d"} )
+}
 
 export const User = mongoose.model<IUser>('User', userSchema)

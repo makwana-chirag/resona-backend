@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { User } from "../models/user";
 
-export const registerUser = async (req: Request, res: Response) => {
+export const userSignUp = async (req: Request, res: Response) => {
 
 const isError = validationResult(req)
 
